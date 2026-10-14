@@ -1,0 +1,52 @@
+kusakabe:~# ab -n 600 -c 30 http://jujutsu.k-43.com/api/
+This is ApacheBench, Version 2.3 <$Revision: 1934973 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking jujutsu.k-43.com (be patient)
+Completed 100 requests
+Completed 200 requests
+Completed 300 requests
+Completed 400 requests
+Completed 500 requests
+Completed 600 requests
+Finished 600 requests
+
+
+Server Software:        nginx
+Server Hostname:        jujutsu.k-43.com
+Server Port:            80
+
+Document Path:          /api/
+Document Length:        225 bytes
+
+Concurrency Level:      30
+Time taken for tests:   0.153 seconds
+Complete requests:      600
+Failed requests:        598
+   (Connect: 0, Receive: 0, Length: 598, Exceptions: 0)
+Non-2xx responses:      598
+Total transferred:      213014 bytes
+HTML transferred:       114070 bytes
+Requests per second:    3927.22 [#/sec] (mean)
+Time per request:       7.639 [ms] (mean)
+Time per request:       0.255 [ms] (mean, across all concurrent requests)
+Transfer rate:          1361.58 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        1    2   0.5      2       4
+Processing:     1    2   2.6      2      62
+Waiting:        1    2   2.4      2      58
+Total:          3    5   2.5      4      62
+
+Percentage of the requests served within a certain time (ms)
+  50%      4
+  66%      5
+  75%      5
+  80%      5
+  90%      6
+  95%      6
+  98%      7
+  99%      7
+ 100%     62 (longest request)

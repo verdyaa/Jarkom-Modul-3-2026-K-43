@@ -26,7 +26,7 @@ subnet 10.85.2.0 netmask 255.255.255.0 {
     option routers 10.85.2.1;
     option subnet-mask 255.255.255.0;
     option broadcast-address 10.85.2.255;
-    option domain-name-servers 8.8.8.8, 192.168.122.1;
+    option domain-name-servers 10.85.1.2, 10.85.1.3, 8.8.8.8, 192.168.122.1;
 
     default-lease-time 600;
     max-lease-time 3600;

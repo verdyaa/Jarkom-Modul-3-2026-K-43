@@ -293,3 +293,25 @@
 * **Ekspektasi Output:**
   - Cache menampilkan `X-Cache-Status: MISS` pada akses awal dan `HIT` pada akses berulang.
   - Rate limiting menghasilkan deretan kode respons yang berubah menjadi **`503`** ketika request melampaui 10 req/detik.
+
+### Soal 20: Audit Kapasitas Layanan & Benchmark (Apache Benchmark)
+* **Di mana dijalankan:** Terminal klien `kusakabe` dan node `gojo`
+* **Perintah:**
+  ```bash
+  # 1. [Di kusakabe] Install Apache Benchmark (jika belum terpasang di Alpine)
+  apk update && apk add apache2-utils
+
+  # 2. [Di kusakabe] Benchmark Web Frontend (Baseline & Cache)
+  ab -n 600 -c 30 http://jujutsu.k-43.com/
+
+  # 3. [Di kusakabe] Benchmark Endpoint /api/ (Efek Rate Limiting)
+  ab -n 600 -c 30 http://jujutsu.k-43.com/api/
+
+  # 4. [Di gojo] Analisis Access Log & Error Log untuk identifikasi penolakan Rate Limit
+  awk '{print $9}' /var/log/nginx/access.log | sort | uniq -c
+  tail -n 30 /var/log/nginx/error.log | grep "limiting requests"
+  ```
+* **Ekspektasi Output & Analisis:**
+  - **Pada Web Frontend (`/`)**: RPS tinggi, latensi rendah, `Failed requests: 0` (karena dilayani langsung oleh cache Nginx Gojo tanpa membebani backend).
+  - **Pada API (`/api/`)**: Muncul sejumlah besar `Failed requests: ... (Connect: 0, Receive: 0, Length: 0, Exceptions: 0)` dan `Non-2xx responses: ~590` (berstatus HTTP 503) akibat pemblokiran oleh `limit_req`.
+  - **Pada Log `gojo`**: `awk` menunjukkan dominasi status `503`, dan `error.log` mencatat baris peringatan `limiting requests, excess: ... by zone "limit_api"`.
