@@ -1,0 +1,21 @@
+CREATE DATABASE db_shibuya_k43;
+
+USE db_shibuya_k43;
+
+CREATE TABLE request_logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    worker_name VARCHAR(50) NOT NULL,
+    client_ip VARCHAR(50) NOT NULL,
+    proxy_ip VARCHAR(50) NOT NULL,
+    user_agent TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CHANGE MASTER TO
+  MASTER_HOST='10.85.4.2',
+  MASTER_USER='replica',
+  MASTER_PASSWORD='replica123',
+  MASTER_LOG_FILE='mysql-bin.000001',
+  MASTER_LOG_POS=328;
+
+START SLAVE;
